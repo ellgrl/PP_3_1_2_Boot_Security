@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title th:text="${user.id} ? 'Редактирование' : 'Создание'"></title>
+  <style>
+    .form-group { margin-bottom: 15px; }
+    label { display: inline-block; width: 100px; }
+    .error { color: red; }
+  </style>
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+
+<h1 th:text="${user.id} ? 'Редактировать пользователя' : 'Добавить нового пользователя'"></h1>
+
+<form th:action="@{${user.id} ? '/admin/update' : '/admin/save'}" th:object="${user}" method="post">
+  <input type="hidden" th:field="*{id}">
+
+  <div class="form-group">
+    <label for="username">Логин:</label>
+    <input type="text" id="username" th:field="*{username}" required>
+  </div>
+
+  <div class="form-group">
+    <label for="password">Пароль:</label>
+    <input type="password" id="password" th:field="*{password}" required>
+  </div>
+
+  <div class="form-group">
+    <label for="email">Email:</label>
+    <input type="email" id="email" th:field="*{email}">
+  </div>
+
+  <div class="form-group">
+    <label>Роли:</label>
+    <div th:each="role : ${allRoles}">
+      <input type="checkbox" th:id="${'role_' + role.id}"
+             th:value="${role.id}" th:field="*{roles}">
+      <label th:for="${'role_' + role.id}" th:text="${role.name}"></label>
+    </div>
+  </div>
+
+  <button type="submit">Сохранить</button>
+  <a th:href="@{/admin}">Отмена</a>
+</form>
+</body>
+</html>

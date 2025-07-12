@@ -1,37 +1,42 @@
 package ru.kata.spring.boot_security.demo.service;
 
-import model.Role;
+import org.springframework.beans.factory.annotation.Autowired;
+import ru.kata.spring.boot_security.demo.model.Role;
 import org.springframework.stereotype.Service;
-import repository.RoleRepository;
+import ru.kata.spring.boot_security.demo.repository.RoleRepository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
+@Transactional
 public class RoleServiceImpl implements RoleService {
+
     private final RoleRepository roleRepository;
 
+    @Autowired
     public RoleServiceImpl(RoleRepository roleRepository) {
         this.roleRepository = roleRepository;
     }
 
     @Override
-    public Role createRole(Role role) {
-        return roleRepository.save(role);
-    }
-
-    @Override
-    public void deleteRole(Long id) {
-        roleRepository.deleteById(id);
+    public List<Role> findAll() {
+        return roleRepository.findAll();
     }
 
     @Override
     public Role findByName(String name) {
-        return roleRepository.findByName(name)
-                .orElseThrow(() -> new RuntimeException("Role not found"));
+        return roleRepository.findByName(name);
     }
 
     @Override
-    public List<Role> getAllRoles() {
-        return roleRepository.findAll();
+    public void save(Role role) {
+        roleRepository.save(role);
+    }
+
+    @Override
+    public List<Role> findRolesByIds(List<Long> ids) {
+        return roleRepository.findAllById(ids);
     }
 }
+

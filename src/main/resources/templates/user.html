@@ -2,22 +2,25 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <title>User Page</title>
+    <meta charset="UTF-8">
+    <title>Мой профиль</title>
+    <style>
+        .user-info { margin: 20px; padding: 20px; border: 1px solid #ddd; }
+    </style>
 </head>
 <body>
-<h1>Welcome, <span th:text="${username}"></span>!</h1>
+<div th:replace="~{fragments/header :: header}"></div>
 
-<form th:action="@{/logout}" method="post">
-    <button type="submit">Logout</button>
-</form>
-</body>
-</html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
-<head>
-    <title>Spring Security Example</title>
-</head>
-<body>
-<h1>User, welcome spring boot security page!</h1>
+<div class="user-info">
+    <h2 sec:authorize="hasRole('ADMIN')">Администратор</h2>
+    <h2 sec:authorize="hasRole('USER')">Пользователь</h2>
 
+    <h3>Информация о пользователе:</h3>
+    <p><strong>Логин:</strong> <span th:text="${user.username}"></span></p>
+    <p><strong>Email:</strong> <span th:text="${user.email}"></span></p>
+    <p><strong>Роли:</strong>
+        <span th:each="role : ${user.roles}" th:text="${role.name} + ' '"></span>
+    </p>
+</div>
 </body>
 </html>
