@@ -33,12 +33,12 @@ public class DataInitializer {
         admin.setUsername("admin");
         admin.setPassword(new BCryptPasswordEncoder().encode("admin"));  // Шифруем пароль!
         admin.setRoles(Set.of(adminRole, userRole));  // У админа две роли
-        userService.saveUser(admin);
+        userService.save(admin);
 
         User user = new User();
         user.setUsername("user");
         user.setPassword(new BCryptPasswordEncoder().encode("user"));
         user.setRoles(Set.of(userRole));
-        userService.saveUser(user);
+        userService.save(user);
     }
 }
